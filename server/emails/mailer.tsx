@@ -2,7 +2,7 @@ import nodemailer, { Transporter } from "nodemailer";
 import Oy from "oy-vey";
 import * as React from "react";
 import env from "@server/env";
-import Logger from "@server/logging/logger";
+import Logger from "@server/logging/Logger";
 import { APM } from "@server/logging/tracing";
 import { baseStyles } from "./templates/components/EmailLayout";
 
@@ -11,6 +11,7 @@ const useTestEmailService =
 
 type SendMailOptions = {
   to: string;
+  replyTo?: string;
   subject: string;
   previewText?: string;
   text: string;
@@ -70,8 +71,8 @@ export class Mailer {
     try {
       Logger.info("email", `Sending email "${data.subject}" to ${data.to}`);
       const info = await transporter.sendMail({
-        from: `Outline <${env.SMTP_FROM_EMAIL}>`,
-        replyTo: env.SMTP_REPLY_EMAIL ?? env.SMTP_FROM_EMAIL,
+        from: env.SMTP_FROM_EMAIL,
+        replyTo: data.replyTo ?? env.SMTP_REPLY_EMAIL ?? env.SMTP_FROM_EMAIL,
         to: data.to,
         subject: data.subject,
         html,
