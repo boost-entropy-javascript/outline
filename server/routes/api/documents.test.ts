@@ -1,3 +1,4 @@
+import { CollectionPermission } from "@shared/types";
 import {
   Document,
   View,
@@ -101,8 +102,6 @@ describe("#documents.info", () => {
     expect(body.data.id).toEqual(document.id);
     expect(body.data.createdBy).toEqual(undefined);
     expect(body.data.updatedBy).toEqual(undefined);
-    await share.reload();
-    expect(share.lastAccessedAt).toBeTruthy();
   });
 
   it("should not return document of a deleted collection, when the user was absent in the collection", async () => {
@@ -191,8 +190,6 @@ describe("#documents.info", () => {
       expect(body.data.document.createdBy).toEqual(undefined);
       expect(body.data.document.updatedBy).toEqual(undefined);
       expect(body.data.sharedTree).toEqual(collection.documentStructure?.[0]);
-      await share.reload();
-      expect(share.lastAccessedAt).toBeTruthy();
     });
     it("should return sharedTree from shareId with id of nested document", async () => {
       const { document, user } = await seed();
@@ -214,8 +211,6 @@ describe("#documents.info", () => {
       expect(body.data.document.createdBy).toEqual(undefined);
       expect(body.data.document.updatedBy).toEqual(undefined);
       expect(body.data.sharedTree).toEqual(document.toJSON());
-      await share.reload();
-      expect(share.lastAccessedAt).toBeTruthy();
     });
     it("should not return sharedTree if child documents not shared", async () => {
       const { document, user } = await seed();
@@ -237,8 +232,6 @@ describe("#documents.info", () => {
       expect(body.data.document.createdBy).toEqual(undefined);
       expect(body.data.document.updatedBy).toEqual(undefined);
       expect(body.data.sharedTree).toEqual(undefined);
-      await share.reload();
-      expect(share.lastAccessedAt).toBeTruthy();
     });
     it("should not return details for nested documents", async () => {
       const { document, collection, user } = await seed();
@@ -800,7 +793,7 @@ describe("#documents.list", () => {
       createdById: user.id,
       collectionId: collection.id,
       userId: user.id,
-      permission: "read",
+      permission: CollectionPermission.Read,
     });
     const res = await server.post("/api/documents.list", {
       body: {
@@ -1244,7 +1237,7 @@ describe("#documents.search", () => {
       createdById: user.id,
       collectionId: collection.id,
       userId: user.id,
-      permission: "read",
+      permission: CollectionPermission.Read,
     });
     const document = await buildDocument({
       title: "search term",
@@ -2005,7 +1998,7 @@ describe("#documents.update", () => {
       createdById: user.id,
       collectionId: collection.id,
       userId: user.id,
-      permission: "read_write",
+      permission: CollectionPermission.ReadWrite,
     });
     const res = await server.post("/api/documents.update", {
       body: {
@@ -2094,7 +2087,7 @@ describe("#documents.update", () => {
       collectionId: collection.id,
       userId: admin.id,
       createdById: admin.id,
-      permission: "read_write",
+      permission: CollectionPermission.ReadWrite,
     });
     const res = await server.post("/api/documents.update", {
       body: {
@@ -2118,7 +2111,7 @@ describe("#documents.update", () => {
       collectionId: collection.id,
       userId: user.id,
       createdById: user.id,
-      permission: "read",
+      permission: CollectionPermission.Read,
     });
     const res = await server.post("/api/documents.update", {
       body: {
@@ -2133,7 +2126,7 @@ describe("#documents.update", () => {
 
   it("does not allow editing in read-only collection", async () => {
     const { user, document, collection } = await seed();
-    collection.permission = "read";
+    collection.permission = CollectionPermission.Read;
     await collection.save();
     const res = await server.post("/api/documents.update", {
       body: {
