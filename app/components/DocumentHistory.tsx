@@ -12,6 +12,7 @@ import Empty from "~/components/Empty";
 import Flex from "~/components/Flex";
 import PaginatedEventList from "~/components/PaginatedEventList";
 import Scrollable from "~/components/Scrollable";
+import useKeyDown from "~/hooks/useKeyDown";
 import useStores from "~/hooks/useStores";
 import { documentUrl } from "~/utils/routeHelpers";
 
@@ -60,6 +61,8 @@ function DocumentHistory() {
     return eventsInDocument;
   }, [eventsInDocument, events, document]);
 
+  useKeyDown("Escape", onCloseHistory);
+
   return (
     <Sidebar
       initial={{
@@ -97,7 +100,7 @@ function DocumentHistory() {
                 documentId: document.id,
               }}
               document={document}
-              empty={<Empty>{t("Oh weird, there's nothing here")}</Empty>}
+              empty={<Empty>{t("No history yet")}</Empty>}
             />
           </Scrollable>
         </Position>
