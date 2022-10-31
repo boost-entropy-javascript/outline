@@ -5387,6 +5387,11 @@ comma-separated-tokens@^1.0.0:
   resolved "https://registry.yarnpkg.com/comma-separated-tokens/-/comma-separated-tokens-1.0.8.tgz#632b80b6117867a158f1080ad498b2fbe7e3f5ea"
   integrity sha512-GHuDRO12Sypu2cV70d1dkA2EUmXHgntrzbpvOB+Qy+49ypNfGgFQIC2fhhXbnyrJRynDCAARsT7Ou0M6hirpfw==
 
+command-score@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/command-score/-/command-score-0.1.2.tgz#b986ad7e8c0beba17552a56636c44ae38363d381"
+  integrity sha512-VtDvQpIJBvBatnONUsPzXYFVKQQAhuf3XTNOAsdBxCNO/QCtUUd8LSgjn0GVarBkCad6aJCZfXgrjYbl/KRr7w==
+
 commander@7, commander@^7.0.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-7.2.0.tgz#a36cb57d0b501ce108e4d20559a150a391d97ab7"
@@ -9975,14 +9980,14 @@ jws@^3.2.2:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
 
-kbar@0.1.0-beta.28:
-  version "0.1.0-beta.28"
-  resolved "https://registry.yarnpkg.com/kbar/-/kbar-0.1.0-beta.28.tgz#35bcf1d45996f5b0cf32f4f70f673c97dc67a1f8"
-  integrity sha512-JmwZUO8fG1irDWqYIUKnoaAXT6t0QxCbmAEBNgHgXWeYFmk9CvhFWwAiFxtSfVX7d+efSTUf93KVrcd2Y61Zaw==
+kbar@0.1.0-beta.36:
+  version "0.1.0-beta.36"
+  resolved "https://registry.yarnpkg.com/kbar/-/kbar-0.1.0-beta.36.tgz#29f21337979b84ffdceb8a319d80fe89b5461936"
+  integrity sha512-i5tU7VYkMmxHCoyG5qzkNeU3qViKBz2F0fjqvWWSKsgVABCF3BjxzAH570Mhn3Zy92x3NGZae8emkBpEk7MKgw==
   dependencies:
     "@reach/portal" "^0.16.0"
+    command-score "^0.1.2"
     fast-equals "^2.0.3"
-    match-sorter "^6.3.0"
     react-virtual "^2.8.2"
     tiny-invariant "^1.2.0"
 
@@ -10736,14 +10741,6 @@ markdown-it@^13.0.1:
     linkify-it "^4.0.1"
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
-
-match-sorter@^6.3.0:
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/match-sorter/-/match-sorter-6.3.1.tgz#98cc37fda756093424ddf3cbc62bfe9c75b92bda"
-  integrity sha512-mxybbo3pPNuA+ZuCUhm5bwNkXrJTbsk5VWbR5wiwz/GC6LIiegBGn2w3O08UG/jdbYLinw51fSQ5xNU1U3MgBw==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    remove-accents "0.4.2"
 
 matcher-collection@^2.0.0:
   version "2.0.1"
@@ -13113,11 +13110,6 @@ remote-content@^3.0.0:
     proxy-from-env "^1.1.0"
     superagent "^7.0.2"
     superagent-proxy "^3.0.0"
-
-remove-accents@0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/remove-accents/-/remove-accents-0.4.2.tgz#0a43d3aaae1e80db919e07ae254b285d9e1c7bb5"
-  integrity sha1-CkPTqq4egNuRngeuJUsoXZ4ce7U=
 
 remove-bom-buffer@^3.0.0:
   version "3.0.0"
