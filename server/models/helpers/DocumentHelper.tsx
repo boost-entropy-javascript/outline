@@ -10,6 +10,7 @@ import { renderToString } from "react-dom/server";
 import styled, { ServerStyleSheet, ThemeProvider } from "styled-components";
 import * as Y from "yjs";
 import EditorContainer from "@shared/editor/components/Styles";
+import textBetween from "@shared/editor/lib/textBetween";
 import GlobalStyles from "@shared/styles/globals";
 import light from "@shared/styles/theme";
 import {
@@ -22,7 +23,8 @@ import { isRTL } from "@shared/utils/rtl";
 import unescape from "@shared/utils/unescape";
 import { parser, schema } from "@server/editor";
 import Logger from "@server/logging/Logger";
-import Document from "@server/models/Document";
+import { APM } from "@server/logging/tracing";
+import type Document from "@server/models/Document";
 import type Revision from "@server/models/Revision";
 import User from "@server/models/User";
 import diff from "@server/utils/diff";
@@ -41,10 +43,11 @@ type HTMLOptions = {
   signedUrls?: boolean;
 };
 
+@APM.trace()
 export default class DocumentHelper {
   /**
    * Returns the document as a Prosemirror Node. This method uses the
-   * collaborative state if available, otherwise it falls back to Markdown->HTML.
+   * collaborative state if available, otherwise it falls back to Markdown.
    *
    * @param document The document or revision to convert
    * @returns The document content as a Prosemirror Node
@@ -56,6 +59,24 @@ export default class DocumentHelper {
       return Node.fromJSON(schema, yDocToProsemirrorJSON(ydoc, "default"));
     }
     return parser.parse(document.text);
+  }
+
+  /**
+   * Returns the document as plain text. This method uses the
+   * collaborative state if available, otherwise it falls back to Markdown.
+   *
+   * @param document The document or revision to convert
+   * @returns The document content as plain text without formatting.
+   */
+  static toPlainText(document: Document | Revision) {
+    const node = DocumentHelper.toProsemirror(document);
+    const textSerializers = Object.fromEntries(
+      Object.entries(schema.nodes)
+        .filter(([, node]) => node.spec.toPlainText)
+        .map(([name, node]) => [name, node.spec.toPlainText])
+    );
+
+    return textBetween(node, 0, node.content.size, textSerializers);
   }
 
   /**
@@ -157,7 +178,7 @@ export default class DocumentHelper {
 
     let output = dom.serialize();
 
-    if (options?.signedUrls && document instanceof Document) {
+    if (options?.signedUrls && "teamId" in document) {
       output = await DocumentHelper.attachmentsToSignedUrls(
         output,
         document.teamId
