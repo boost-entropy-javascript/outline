@@ -5,7 +5,7 @@ import winston from "winston";
 import env from "@server/env";
 import Metrics from "@server/logging/Metrics";
 import Sentry from "@server/logging/sentry";
-import * as Tracing from "./tracing";
+import * as Tracing from "./tracer";
 
 const isProduction = env.ENVIRONMENT === "production";
 
@@ -28,7 +28,9 @@ class Logger {
   output: winston.Logger;
 
   constructor() {
-    this.output = winston.createLogger();
+    this.output = winston.createLogger({
+      level: isProduction ? "info" : "debug",
+    });
     this.output.add(
       new winston.transports.Console({
         format: isProduction

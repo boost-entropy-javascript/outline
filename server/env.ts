@@ -330,7 +330,7 @@ export class Environment {
   public RELEASE = this.toOptionalString(process.env.RELEASE);
 
   /**
-   * A Google Analytics tracking ID, only v3 supported at this time.
+   * A Google Analytics tracking ID, supports only v3 properties.
    */
   @Contains("UA-")
   @IsOptional()
@@ -342,6 +342,11 @@ export class Environment {
    * A DataDog API key for tracking server metrics.
    */
   public DD_API_KEY = process.env.DD_API_KEY;
+
+  /**
+   * The name of the service to use in DataDog.
+   */
+  public DD_SERVICE = process.env.DD_SERVICE ?? "outline";
 
   /**
    * Google OAuth2 client credentials. To enable authentication with Google.
