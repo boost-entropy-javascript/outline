@@ -20,6 +20,7 @@ defaults: &defaults
     SMTP_FROM_EMAIL: hello@example.com
     AWS_S3_UPLOAD_BUCKET_URL: https://s3.amazonaws.com
     AWS_S3_UPLOAD_BUCKET_NAME: outline-circle
+    NODE_OPTIONS: --max-old-space-size=8000
 
 executors:
   docker-publisher:
@@ -98,8 +99,11 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: build-webpack
-          command: yarn build:webpack
+          name: build-vite
+          command: yarn vite:build
+      - run:
+          name: Send bundle stats to RelativeCI
+          command: npx relative-ci-agent
   build-image:
     executor: docker-publisher
     steps:
