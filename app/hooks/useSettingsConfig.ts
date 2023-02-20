@@ -34,13 +34,13 @@ import Tokens from "~/scenes/Settings/Tokens";
 import Zapier from "~/scenes/Settings/Zapier";
 import GoogleIcon from "~/components/Icons/GoogleIcon";
 import ZapierIcon from "~/components/Icons/ZapierIcon";
+import PluginLoader from "~/utils/PluginLoader";
 import isCloudHosted from "~/utils/isCloudHosted";
-import { loadPlugins } from "~/utils/plugins";
 import { accountPreferencesPath } from "~/utils/routeHelpers";
 import useCurrentTeam from "./useCurrentTeam";
 import usePolicy from "./usePolicy";
 
-type SettingsGroups = "Account" | "Team" | "Integrations";
+type SettingsGroups = "Account" | "Workspace" | "Integrations";
 
 export type ConfigItem = {
   name: string;
@@ -100,7 +100,7 @@ const useSettingsConfig = () => {
         path: "/settings/details",
         component: Details,
         enabled: can.update,
-        group: t("Team"),
+        group: t("Workspace"),
         icon: TeamIcon,
       },
       Security: {
@@ -108,7 +108,7 @@ const useSettingsConfig = () => {
         path: "/settings/security",
         component: Security,
         enabled: can.update,
-        group: t("Team"),
+        group: t("Workspace"),
         icon: PadlockIcon,
       },
       Features: {
@@ -116,7 +116,7 @@ const useSettingsConfig = () => {
         path: "/settings/features",
         component: Features,
         enabled: can.update,
-        group: t("Team"),
+        group: t("Workspace"),
         icon: BeakerIcon,
       },
       Members: {
@@ -124,7 +124,7 @@ const useSettingsConfig = () => {
         path: "/settings/members",
         component: Members,
         enabled: true,
-        group: t("Team"),
+        group: t("Workspace"),
         icon: UserIcon,
       },
       Groups: {
@@ -132,7 +132,7 @@ const useSettingsConfig = () => {
         path: "/settings/groups",
         component: Groups,
         enabled: true,
-        group: t("Team"),
+        group: t("Workspace"),
         icon: GroupIcon,
       },
       Shares: {
@@ -140,7 +140,7 @@ const useSettingsConfig = () => {
         path: "/settings/shares",
         component: Shares,
         enabled: true,
-        group: t("Team"),
+        group: t("Workspace"),
         icon: LinkIcon,
       },
       Import: {
@@ -148,7 +148,7 @@ const useSettingsConfig = () => {
         path: "/settings/import",
         component: Import,
         enabled: can.createImport,
-        group: t("Team"),
+        group: t("Workspace"),
         icon: ImportIcon,
       },
       Export: {
@@ -156,11 +156,11 @@ const useSettingsConfig = () => {
         path: "/settings/export",
         component: Export,
         enabled: can.createExport,
-        group: t("Team"),
+        group: t("Workspace"),
         icon: ExportIcon,
       },
       // Integrations
-      ...mapValues(loadPlugins(), (plugin) => {
+      ...mapValues(PluginLoader.plugins, (plugin) => {
         return {
           name: plugin.config.name,
           path: integrationSettingsPath(plugin.id),
@@ -195,14 +195,7 @@ const useSettingsConfig = () => {
         icon: ZapierIcon,
       },
     }),
-    [
-      t,
-      can.createApiKey,
-      can.update,
-      can.createImport,
-      can.createExport,
-      can.createWebhookSubscription,
-    ]
+    [t, can.createApiKey, can.update, can.createImport, can.createExport]
   );
 
   const enabledConfigs = React.useMemo(
