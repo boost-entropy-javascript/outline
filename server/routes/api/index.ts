@@ -7,13 +7,15 @@ import userAgent, { UserAgentContext } from "koa-useragent";
 import env from "@server/env";
 import { NotFoundError } from "@server/errors";
 import Logger from "@server/logging/Logger";
+import coalesceBody from "@server/middlewares/coaleseBody";
 import { AppState, AppContext } from "@server/types";
 import apiKeys from "./apiKeys";
 import attachments from "./attachments";
 import auth from "./auth";
 import authenticationProviders from "./authenticationProviders";
 import collections from "./collections";
-import utils from "./cron";
+import comments from "./comments/comments";
+import cron from "./cron";
 import developer from "./developer";
 import documents from "./documents";
 import events from "./events";
@@ -45,6 +47,7 @@ api.use(
     },
   })
 );
+api.use(coalesceBody());
 api.use<BaseContext, UserAgentContext>(userAgent);
 api.use(apiWrapper());
 api.use(editor());
@@ -65,6 +68,7 @@ router.use("/", authenticationProviders.routes());
 router.use("/", events.routes());
 router.use("/", users.routes());
 router.use("/", collections.routes());
+router.use("/", comments.routes());
 router.use("/", documents.routes());
 router.use("/", pins.routes());
 router.use("/", revisions.routes());
@@ -78,7 +82,7 @@ router.use("/", teams.routes());
 router.use("/", integrations.routes());
 router.use("/", notificationSettings.routes());
 router.use("/", attachments.routes());
-router.use("/", utils.routes());
+router.use("/", cron.routes());
 router.use("/", groups.routes());
 router.use("/", fileOperationsRoute.routes());
 
