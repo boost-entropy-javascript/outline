@@ -90,7 +90,7 @@
     "datadog-metrics": "^0.11.0",
     "date-fns": "^2.25.0",
     "dd-trace": "^3.14.1",
-    "dotenv": "^4.0.0",
+    "dotenv": "^16.0.3",
     "email-providers": "^1.13.1",
     "emoji-regex": "^10.0.0",
     "es6-error": "^4.1.1",
