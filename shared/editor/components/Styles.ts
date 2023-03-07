@@ -56,7 +56,7 @@ math-inline {
 
 }
 
-math-inline .math-render { 
+math-inline .math-render {
   display: inline-block;
   font-size: 0.85em;
 }
@@ -119,6 +119,17 @@ font-weight: ${props.theme.fontWeight};
 font-size: 1em;
 line-height: 1.6em;
 width: 100%;
+
+.mention {
+  background: ${props.theme.mentionBackground};
+  border-radius: 12px;
+  padding-bottom: 2px;
+  padding-top: 1px;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-weight: 500;
+  font-size: 14px;
+}
 
 > div {
   background: transparent;
@@ -563,7 +574,7 @@ h6 {
   opacity: 1;
 }
 
-.comment {
+.comment-marker {
   border-bottom: 2px solid ${transparentize(0.5, props.theme.brand.marine)};
   transition: background 100ms ease-in-out;
   cursor: pointer;
@@ -978,7 +989,7 @@ mark {
     display: inline;
   }
 
-  &.code-hidden { 
+  &.code-hidden {
     button,
     select,
     button.show-diagram-button {
@@ -1463,7 +1474,7 @@ del[data-operation-index] {
     display: none;
   }
 
-  .comment {
+  .comment-marker {
     border: 0;
     background: none;
   }

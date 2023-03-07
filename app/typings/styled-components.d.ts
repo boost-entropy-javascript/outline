@@ -111,6 +111,7 @@ declare module "styled-components" {
     vpadding: string;
     hpadding: string;
     sidebarWidth: number;
+    sidebarRightWidth: number;
     sidebarCollapsedWidth: number;
     sidebarMinWidth: number;
     sidebarMaxWidth: number;
@@ -157,6 +158,7 @@ declare module "styled-components" {
     inputBorder: string;
     inputBorderFocused: string;
     listItemHoverBackground: string;
+    mentionBackground: string;
     buttonNeutralBackground: string;
     buttonNeutralText: string;
     buttonNeutralBorder: string;
