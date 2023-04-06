@@ -1,3 +1,4 @@
+import commandScore from "command-score";
 import { capitalize } from "lodash";
 import { findParentNode } from "prosemirror-utils";
 import * as React from "react";
@@ -45,7 +46,7 @@ type Position = ((TopAnchor | BottomAnchor) & (LeftAnchor | RightAnchor)) & {
 const defaultPosition: Position = {
   top: 0,
   bottom: undefined,
-  left: -1000,
+  left: -10000,
   right: undefined,
   isAbove: false,
 };
@@ -397,10 +398,9 @@ function SuggestionsMenu<T extends MenuItem>(props: Props<T>) {
 
     return filterExcessSeparators(
       filtered.sort((item) => {
-        return searchInput &&
-          (item.title || "").toLowerCase().startsWith(searchInput)
-          ? -1
-          : 1;
+        return searchInput && item.title
+          ? commandScore(item.title, searchInput)
+          : 0;
       })
     );
   }, [commands, props]);
@@ -485,11 +485,15 @@ function SuggestionsMenu<T extends MenuItem>(props: Props<T>) {
     };
 
     window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown, {
+      capture: true,
+    });
 
     return () => {
       window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown, {
+        capture: true,
+      });
     };
   }, [close, filtered, handleClickItem, props, selectedIndex]);
 
