@@ -1,9 +1,20 @@
 import { debounce } from "lodash";
 import { observer } from "mobx-react";
-import { EmailIcon } from "outline-icons";
+import {
+  AcademicCapIcon,
+  CheckboxIcon,
+  CollectionIcon,
+  CommentIcon,
+  EditIcon,
+  EmailIcon,
+  PublishIcon,
+  StarredIcon,
+  UserIcon,
+} from "outline-icons";
 import * as React from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { NotificationEventType } from "@shared/types";
+import Flex from "~/components/Flex";
 import Heading from "~/components/Heading";
 import Input from "~/components/Input";
 import Notice from "~/components/Notice";
@@ -24,6 +35,7 @@ function Notifications() {
   const options = [
     {
       event: NotificationEventType.PublishDocument,
+      icon: <PublishIcon />,
       title: t("Document published"),
       description: t(
         "Receive a notification whenever a new document is published"
@@ -31,6 +43,7 @@ function Notifications() {
     },
     {
       event: NotificationEventType.UpdateDocument,
+      icon: <EditIcon />,
       title: t("Document updated"),
       description: t(
         "Receive a notification when a document you are subscribed to is edited"
@@ -38,13 +51,15 @@ function Notifications() {
     },
     {
       event: NotificationEventType.CreateComment,
+      icon: <CommentIcon />,
       title: t("Comment posted"),
       description: t(
         "Receive a notification when a document you are subscribed to or a thread you participated in receives a comment"
       ),
     },
     {
-      event: NotificationEventType.Mentioned,
+      event: NotificationEventType.MentionedInComment,
+      icon: <EmailIcon />,
       title: t("Mentioned"),
       description: t(
         "Receive a notification when someone mentions you in a document or comment"
@@ -52,6 +67,7 @@ function Notifications() {
     },
     {
       event: NotificationEventType.CreateCollection,
+      icon: <CollectionIcon />,
       title: t("Collection created"),
       description: t(
         "Receive a notification whenever a new collection is created"
@@ -59,6 +75,7 @@ function Notifications() {
     },
     {
       event: NotificationEventType.InviteAccepted,
+      icon: <UserIcon />,
       title: t("Invite accepted"),
       description: t(
         "Receive a notification when someone you invited creates an account"
@@ -66,6 +83,7 @@ function Notifications() {
     },
     {
       event: NotificationEventType.ExportCompleted,
+      icon: <CheckboxIcon checked />,
       title: t("Export completed"),
       description: t(
         "Receive a notification when an export you requested has been completed"
@@ -73,12 +91,14 @@ function Notifications() {
     },
     {
       visible: isCloudHosted,
+      icon: <AcademicCapIcon />,
       event: NotificationEventType.Onboarding,
       title: t("Getting started"),
       description: t("Tips on getting started with features and functionality"),
     },
     {
       visible: isCloudHosted,
+      icon: <StarredIcon />,
       event: NotificationEventType.Features,
       title: t("New features"),
       description: t("Receive an email when new features of note are added"),
@@ -104,7 +124,7 @@ function Notifications() {
   const showSuccessNotice = window.location.search === "?success";
 
   return (
-    <Scene title={t("Notifications")} icon={<EmailIcon color="currentColor" />}>
+    <Scene title={t("Notifications")} icon={<EmailIcon />}>
       <Heading>{t("Notifications")}</Heading>
 
       {showSuccessNotice && (
@@ -138,7 +158,11 @@ function Notifications() {
             return (
               <SettingRow
                 visible={option.visible}
-                label={option.title}
+                label={
+                  <Flex align="center" gap={4}>
+                    {option.icon} {option.title}
+                  </Flex>
+                }
                 name={option.event}
                 description={option.description}
               >

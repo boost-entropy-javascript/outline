@@ -60,7 +60,7 @@ export default class BlockMenuTrigger extends Extension {
     const button = document.createElement("button");
     button.className = "block-menu-trigger";
     button.type = "button";
-    ReactDOM.render(<PlusIcon color="currentColor" />, button);
+    ReactDOM.render(<PlusIcon />, button);
 
     return [
       new Plugin({
@@ -99,10 +99,10 @@ export default class BlockMenuTrigger extends Extension {
             ) {
               const { pos } = view.state.selection.$from;
 
-              return run(view, pos, pos, OPEN_REGEX, (state, match) => {
+              return run(view, pos, pos, OPEN_REGEX, (state, match) =>
                 // just tell Prosemirror we handled it and not to do anything
-                return match ? true : null;
-              });
+                match ? true : null
+              );
             }
 
             return false;
