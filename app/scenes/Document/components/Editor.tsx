@@ -11,6 +11,7 @@ import { RefHandle } from "~/components/ContentEditable";
 import Editor, { Props as EditorProps } from "~/components/Editor";
 import Flex from "~/components/Flex";
 import useFocusedComment from "~/hooks/useFocusedComment";
+import usePolicy from "~/hooks/usePolicy";
 import useStores from "~/hooks/useStores";
 import {
   documentHistoryUrl,
@@ -60,6 +61,7 @@ function DocumentEditor(props: Props, ref: React.RefObject<any>) {
     multiplayer,
     ...rest
   } = props;
+  const can = usePolicy(document.id);
 
   const childRef = React.useRef<HTMLDivElement>(null);
   const focusAtStart = React.useCallback(() => {
@@ -67,6 +69,12 @@ function DocumentEditor(props: Props, ref: React.RefObject<any>) {
       ref.current.focusAtStart();
     }
   }, [ref]);
+
+  React.useEffect(() => {
+    if (focusedComment) {
+      ui.expandComments(document.id);
+    }
+  }, [focusedComment, ui, document.id]);
 
   // Save document when blurring title, but delay so that if clicking on a
   // button this is allowed to execute first.
@@ -89,13 +97,12 @@ function DocumentEditor(props: Props, ref: React.RefObject<any>) {
 
   const handleClickComment = React.useCallback(
     (commentId: string) => {
-      ui.expandComments(document.id);
       history.replace({
         pathname: window.location.pathname.replace(/\/history$/, ""),
         state: { commentId },
       });
     },
-    [ui, document.id, history]
+    [history]
   );
 
   // Create a Comment model in local store when a comment mark is created, this
@@ -117,13 +124,12 @@ function DocumentEditor(props: Props, ref: React.RefObject<any>) {
       comment.id = commentId;
       comments.add(comment);
 
-      ui.expandComments(document.id);
       history.replace({
         pathname: window.location.pathname.replace(/\/history$/, ""),
         state: { commentId },
       });
     },
-    [comments, user?.id, props.id, ui, document.id, history]
+    [comments, user?.id, props.id, history]
   );
 
   // Soft delete the Comment model when associated mark is totally removed.
@@ -178,7 +184,7 @@ function DocumentEditor(props: Props, ref: React.RefObject<any>) {
         focusedCommentId={focusedComment?.id}
         onClickCommentMark={handleClickComment}
         onCreateCommentMark={
-          team?.getPreference(TeamPreference.Commenting)
+          team?.getPreference(TeamPreference.Commenting) && can.comment
             ? handleDraftComment
             : undefined
         }

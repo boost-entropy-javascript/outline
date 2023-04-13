@@ -5,6 +5,7 @@ import { darken } from "polished";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import styled, { css } from "styled-components";
+import breakpoint from "styled-components-breakpoint";
 import { s } from "@shared/styles";
 import { Minute } from "@shared/utils/time";
 import Comment from "~/models/Comment";
@@ -68,6 +69,8 @@ type Props = {
   lastOfAuthor?: boolean;
   /** The date of the previous comment in the thread */
   previousCommentCreatedAt?: string;
+  /** Whether the user can reply in the thread */
+  canReply: boolean;
 };
 
 function CommentThreadItem({
@@ -77,6 +80,7 @@ function CommentThreadItem({
   lastOfThread,
   dir,
   previousCommentCreatedAt,
+  canReply,
 }: Props) {
   const { editor } = useDocumentContext();
   const { showToast } = useToasts();
@@ -139,6 +143,7 @@ function CommentThreadItem({
         $firstOfAuthor={firstOfAuthor}
         $lastOfThread={lastOfThread}
         $dir={dir}
+        $canReply={canReply}
         column
       >
         {(showAuthor || showTime) && (
@@ -247,12 +252,13 @@ export const Bubble = styled(Flex)<{
   $firstOfThread?: boolean;
   $firstOfAuthor?: boolean;
   $lastOfThread?: boolean;
+  $canReply?: boolean;
   $focused?: boolean;
   $dir?: "rtl" | "ltr";
 }>`
   position: relative;
   flex-grow: 1;
-  font-size: 15px;
+  font-size: 16px;
   color: ${s("text")};
   background: ${s("commentBackground")};
   min-width: 2em;
@@ -260,8 +266,9 @@ export const Bubble = styled(Flex)<{
   padding: 8px 12px;
   transition: color 100ms ease-out, ${s("backgroundTransition")};
 
-  ${({ $lastOfThread }) =>
+  ${({ $lastOfThread, $canReply }) =>
     $lastOfThread &&
+    !$canReply &&
     "border-bottom-left-radius: 8px; border-bottom-right-radius: 8px"};
 
   ${({ $firstOfThread }) =>
@@ -280,6 +287,10 @@ export const Bubble = styled(Flex)<{
   &:hover ${Menu} {
     opacity: 1;
   }
+
+  ${breakpoint("tablet")`
+    font-size: 15px;
+  `}
 `;
 
 export default observer(CommentThreadItem);
