@@ -19,10 +19,10 @@
     jsonpointer "^5.0.0"
     leven "^3.1.0"
 
-"@babel/cli@^7.21.0":
-  version "7.21.0"
-  resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.21.0.tgz#1868eb70e9824b427fc607610cce8e9e7889e7e1"
-  integrity sha512-xi7CxyS8XjSyiwUGCfwf+brtJxjW1/ZTcBUkP10xawIEXLX5HzLn+3aXkgxozcP2UhRhtKTmQurw9Uaes7jZrA==
+"@babel/cli@^7.21.5":
+  version "7.21.5"
+  resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.21.5.tgz#a685a5b50b785f2edfbf6e042c1265c653547d9d"
+  integrity sha512-TOKytQ9uQW9c4np8F+P7ZfPINy5Kv+pizDIUwSVH8X5zHgYHV4AA8HE5LA450xXeu4jEfmUckTYvv1I4S26M/g==
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.17"
     commander "^4.0.1"
@@ -1117,20 +1117,20 @@
   resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-6.0.2.tgz#6110f918d273fe2af8ea1c4398a88774bb9fc12f"
   integrity sha512-Tbsj02wXCbqGmzdnXNk0SOF19ChhRU70BsroIi4Pm6Ehp56in6vch94mfbdQ17DozxkL3BAVjbZ4Qc1a0HFRAg==
 
-"@bull-board/api@4.12.1", "@bull-board/api@^4.2.2":
-  version "4.12.1"
-  resolved "https://registry.yarnpkg.com/@bull-board/api/-/api-4.12.1.tgz#10e328fb3c70473ca99a27e6ebbec11b5ce6a9d5"
-  integrity sha512-cJk7LhphNZHwbN4yON5rYiDgob3D7cwFGrxf6LlnR1w/a6zyap1x/o74MfV/0T6NpUpvUSf7ccbj3knU6DNYVw==
+"@bull-board/api@4.12.2", "@bull-board/api@^4.2.2":
+  version "4.12.2"
+  resolved "https://registry.yarnpkg.com/@bull-board/api/-/api-4.12.2.tgz#d025de77ccb1b454c583184b27bc939d2e845838"
+  integrity sha512-efF8K1pvfEEft2ELQwCBe/a225vHufCjM2hfcyvmIG/SUX6TlKQFUFZ1+KV0wenD9wxvUVb5wxUu6on+HrZiVg==
   dependencies:
     redis-info "^3.0.8"
 
-"@bull-board/koa@^4.12.1":
-  version "4.12.1"
-  resolved "https://registry.yarnpkg.com/@bull-board/koa/-/koa-4.12.1.tgz#51b07284c356948a0f8aecae03cebe37f43c85d0"
-  integrity sha512-aj/mf00TTxr48/ce/yovy8NwZNWjHTamOG3mZlr2isZHcngO/3F1zeMDgQg+/itOgWjJY9kt3br5uxNupBYrEQ==
+"@bull-board/koa@^4.12.2":
+  version "4.12.2"
+  resolved "https://registry.yarnpkg.com/@bull-board/koa/-/koa-4.12.2.tgz#a6eb61f2fd265b408e4cf0fb9dd94e89d67e2cf1"
+  integrity sha512-A7NQwz85YUpxchAQwJNXCoNE3h8Iy6NagxernARfx1FRk7pJkJyV8Yrgfm07X2y7aSqBdirQ+0G3c5fJ21K++Q==
   dependencies:
-    "@bull-board/api" "4.12.1"
-    "@bull-board/ui" "4.12.1"
+    "@bull-board/api" "4.12.2"
+    "@bull-board/ui" "4.12.2"
     ejs "^3.1.7"
     koa "^2.13.1"
     koa-mount "^4.0.0"
@@ -1138,12 +1138,12 @@
     koa-static "^5.0.0"
     koa-views "^7.0.1"
 
-"@bull-board/ui@4.12.1":
-  version "4.12.1"
-  resolved "https://registry.yarnpkg.com/@bull-board/ui/-/ui-4.12.1.tgz#53a41ad1de37e942b907b7095ec575e852c2acfe"
-  integrity sha512-nNTjxitLEre+UdZjwMHwlKKGxpg3OV/Sf7dNOlhJYoRjO7aYPb63M+BfGVrYgupk3V73Q0qvl1emtsnF/qz/Wg==
+"@bull-board/ui@4.12.2":
+  version "4.12.2"
+  resolved "https://registry.yarnpkg.com/@bull-board/ui/-/ui-4.12.2.tgz#0002ca3b095109bc83b78e186c8c6c87f65f68b1"
+  integrity sha512-jB/OOEhg+DUL6ssmtQYTK+iYd3iy68bbozOp+q2xVUC4V7zeFmYF25sIApYFTNfbjuUMesAVOiX4u0gNEo/J7w==
   dependencies:
-    "@bull-board/api" "4.12.1"
+    "@bull-board/api" "4.12.2"
 
 "@bundle-stats/plugin-webpack-filter@4.1.5":
   version "4.1.5"
@@ -4132,10 +4132,10 @@ babel-plugin-transform-typescript-metadata@^0.3.2:
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
-babel-plugin-tsconfig-paths-module-resolver@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/babel-plugin-tsconfig-paths-module-resolver/-/babel-plugin-tsconfig-paths-module-resolver-1.0.3.tgz#ed5296034c82ac54a55b5e43e5d5789079545823"
-  integrity sha512-VfQNSKv8kTdKvBYWC7ck5lOs4/yV/6msDNOPjlwQqeRJcpAgp8oS1a6fqeSlhKeumTwVoNeFs9MFGYqG5ut/bg==
+babel-plugin-tsconfig-paths-module-resolver@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/babel-plugin-tsconfig-paths-module-resolver/-/babel-plugin-tsconfig-paths-module-resolver-1.0.4.tgz#114a1761033c1534d1b55ad347be67eebefeeeeb"
+  integrity sha512-XnIYjL6J2l8mt3oO+mXGkuLRCBhhNlS+LlCqmjTZfXpQCJod8dLETKrJA2wPRbQi8YAKqjfFxc7PhklTGcJ9hQ==
   dependencies:
     babel-plugin-module-resolver "^4.1.0"
     tsconfig-paths "^3.11.0"
@@ -4964,10 +4964,10 @@ core-js@^2.4.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
 
-core-js@^3.30.0:
-  version "3.30.0"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.30.0.tgz#64ac6f83bc7a49fd42807327051701d4b1478dea"
-  integrity sha512-hQotSSARoNh1mYPi9O2YaWeiq/cEB95kOrFb4NCrO4RIFt1qqNpKsaE+vy/L3oiqvND5cThqXzUU3r9F7Efztg==
+core-js@^3.30.2:
+  version "3.30.2"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.30.2.tgz#6528abfda65e5ad728143ea23f7a14f0dcf503fc"
+  integrity sha512-uBJiDmwqsbJCWHAwjrx3cvjbMXP7xD72Dmsn5LOJpiRmE3WbBbN5rCqQ2Qh6Ek6/eOrjlWngEynBWo4VxerQhg==
 
 core-util-is@~1.0.0:
   version "1.0.2"
@@ -7517,10 +7517,10 @@ i18next-parser@^7.9.0:
     vinyl-fs "^3.0.2"
     vue-template-compiler "^2.6.11"
 
-i18next@^22.0.4, i18next@^22.4.15:
-  version "22.4.15"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-22.4.15.tgz#951882b751872994f8502b5a6ef6f796e6a7d7f8"
-  integrity sha512-yYudtbFrrmWKLEhl6jvKUYyYunj4bTBCe2qIUYAxbXoPusY7YmdwPvOE6fx6UIfWvmlbCWDItr7wIs8KEBZ5Zg==
+i18next@^22.0.4, i18next@^22.5.0:
+  version "22.5.0"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-22.5.0.tgz#16d98eba7c748ab183a36505046b5b91f87e989b"
+  integrity sha512-sqWuJFj+wJAKQP2qBQ+b7STzxZNUmnSxrehBCCj9vDOW9RDYPfqCaK1Hbh2frNYQuPziz6O2CGoJPwtzY3vAYA==
   dependencies:
     "@babel/runtime" "^7.20.6"
 
