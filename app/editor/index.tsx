@@ -201,6 +201,7 @@ export class Editor extends React.PureComponent<
   commands: Record<string, CommandFactory>;
   rulePlugins: PluginSimple[];
   events = new EventEmitter();
+  mutationObserver?: MutationObserver;
 
   public constructor(props: Props & ThemeProps<DefaultTheme>) {
     super(props);
@@ -292,6 +293,7 @@ export class Editor extends React.PureComponent<
 
   public componentWillUnmount(): void {
     window.removeEventListener("theme-changed", this.dispatchThemeChanged);
+    this.mutationObserver?.disconnect();
   }
 
   private init() {
@@ -487,16 +489,16 @@ export class Editor extends React.PureComponent<
     return view;
   }
 
-  public scrollToAnchor(hash: string) {
+  public async scrollToAnchor(hash: string) {
     if (!hash) {
       return;
     }
 
     try {
-      const element = document.querySelector(hash);
-      if (element) {
-        setTimeout(() => element.scrollIntoView({ behavior: "smooth" }), 0);
-      }
+      this.mutationObserver?.disconnect();
+      this.mutationObserver = observe(hash, (element) => {
+        element.scrollIntoView({ behavior: "smooth" });
+      });
     } catch (err) {
       // querySelector will throw an error if the hash begins with a number
       // or contains a period. This is protected against now by safeSlugify
@@ -850,5 +852,22 @@ const LazyLoadedEditor = React.forwardRef<Editor, Props>(
     </WithTheme>
   )
 );
+
+const observe = (
+  selector: string,
+  callback: (element: HTMLElement) => void,
+  targetNode = document.body
+) => {
+  const observer = new MutationObserver((mutations) => {
+    const match = [...mutations]
+      .flatMap((mutation) => [...mutation.addedNodes])
+      .find((node: HTMLElement) => node.matches?.(selector));
+    if (match) {
+      callback(match as HTMLElement);
+    }
+  });
+  observer.observe(targetNode, { childList: true, subtree: true });
+  return observer;
+};
 
 export default LazyLoadedEditor;
