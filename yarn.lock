@@ -5776,9 +5776,9 @@ dotenv@^4.0.0:
   integrity sha1-hk7xN5rO1Vzm+V3r7NzhefegzR0=
 
 dottie@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/dottie/-/dottie-2.0.2.tgz#cc91c0726ce3a054ebf11c55fbc92a7f266dd154"
-  integrity sha512-fmrwR04lsniq/uSr8yikThDTrM7epXHBAAjH9TbeH3rEA8tdCO7mRzB9hdmdGyJCxF8KERo9CITcm3kGuoyMhg==
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/dottie/-/dottie-2.0.4.tgz#9ce42965f45e577a6fa7d988d47852fac70c4e82"
+  integrity sha512-iz64WUOmp/ECQhWMJjTWFzJN/wQ7RJ5v/a6A2OiCwjaGCpNo66WGIjlSf+IULO9DQd0b4cFawLOTbiKSrpKodw==
 
 duck@^0.1.12:
   version "0.1.12"
@@ -10643,10 +10643,10 @@ prosemirror-markdown@^1.11.0:
     markdown-it "^13.0.1"
     prosemirror-model "^1.0.0"
 
-prosemirror-model@^1.0.0, prosemirror-model@^1.16.0, prosemirror-model@^1.19.1, prosemirror-model@^1.8.1:
-  version "1.19.1"
-  resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.19.1.tgz#7e10cd9584a0a55c87ffbecc68aa9d105b9a0f53"
-  integrity sha512-RpV0fZfy74DEO9GPRbGcG6xN33KuqEvlLE2V0e5CXUGs3xkZsiJfx1dcYPU57+606NVYCaDN1riFXdXBQRaRcg==
+prosemirror-model@^1.0.0, prosemirror-model@^1.16.0, prosemirror-model@^1.19.2, prosemirror-model@^1.8.1:
+  version "1.19.2"
+  resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.19.2.tgz#297c9ecfb103154e605f0dbaf3cc72ee32ca0ad5"
+  integrity sha512-RXl0Waiss4YtJAUY3NzKH0xkJmsZupCIccqcIFoLTIKFlKNbIvFDRl27/kQy1FP8iUAxrjRRfIVvOebnnXJgqQ==
   dependencies:
     orderedmap "^2.0.0"
 
@@ -10987,10 +10987,10 @@ react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.6:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-merge-refs@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-2.0.1.tgz#a1f8c2dadefa635333e9b91ec59f30b65228b006"
-  integrity sha512-pywF6oouJWuqL26xV3OruRSIqai31R9SdJX/I3gP2q8jLxUnA1IwXcLW8werUHLZOrp4N7YOeQNZrh/BKrHI4A==
+react-merge-refs@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-2.0.2.tgz#73f576111124897dec4ea56035a97e199e8cb377"
+  integrity sha512-V5BGTwGa2r+/t0A/BZMS6L7VPXY0CU8xtAhkT3XUoI1WJJhhtvulvoiZkJ5Jt9YAW23m4xFWmhQ+C5HwjtTFhQ==
 
 react-portal@^4.2.0:
   version "4.2.1"
