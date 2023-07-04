@@ -125,7 +125,6 @@ function InnerDocumentLink(
       }
       await documents.update({
         id: document.id,
-        text: document.text,
         title,
       });
     },
@@ -335,7 +334,9 @@ function InnerDocumentLink(
                   />
                 }
                 isActive={(match, location: Location<{ starred?: boolean }>) =>
-                  !!match && location.state?.starred === inStarredSection
+                  ((document && location.pathname.endsWith(document.urlId)) ||
+                    !!match) &&
+                  location.state?.starred === inStarredSection
                 }
                 isActiveDrop={isOverReparent && canDropToReparent}
                 depth={depth}
