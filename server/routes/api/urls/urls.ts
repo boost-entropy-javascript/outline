@@ -8,8 +8,10 @@ import validate from "@server/middlewares/validate";
 import { Document, User } from "@server/models";
 import { authorize } from "@server/policies";
 import { presentDocument, presentMention } from "@server/presenters/unfurls";
+import presentUnfurl from "@server/presenters/unfurls/unfurl";
 import { APIContext } from "@server/types";
 import { RateLimiterStrategy } from "@server/utils/RateLimiter";
+import resolvers from "@server/utils/unfurl";
 import * as T from "./schema";
 
 const router = new Router();
@@ -47,22 +49,27 @@ router.post(
     }
 
     const previewDocumentId = parseDocumentSlug(url);
-    if (!previewDocumentId) {
-      ctx.response.status = 204;
+    if (previewDocumentId) {
+      const document = previewDocumentId
+        ? await Document.findByPk(previewDocumentId, { userId: actor.id })
+        : undefined;
+      if (!document) {
+        throw NotFoundError("Document does not exist");
+      }
+      authorize(actor, "read", document);
+
+      ctx.body = presentDocument(document, actor);
       return;
     }
 
-    const document = previewDocumentId
-      ? await Document.findByPk(previewDocumentId, {
-          userId: actor.id,
-        })
-      : undefined;
-    if (!document) {
-      throw NotFoundError("Document does not exist");
+    if (resolvers.Iframely) {
+      const data = await resolvers.Iframely.unfurl(url);
+      return data.error
+        ? (ctx.response.status = 204)
+        : (ctx.body = presentUnfurl(data));
     }
-    authorize(actor, "read", document);
 
-    ctx.body = presentDocument(document, actor);
+    return (ctx.response.status = 204);
   }
 );
 
