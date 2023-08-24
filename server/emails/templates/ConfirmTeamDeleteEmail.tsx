@@ -14,23 +14,23 @@ type Props = EmailProps & {
 };
 
 /**
- * Email sent to a user when they request to delete their account.
+ * Email sent to a user when they request to delete their workspace.
  */
-export default class ConfirmUserDeleteEmail extends BaseEmail<
+export default class ConfirmTeamDeleteEmail extends BaseEmail<
   Props,
   Record<string, any>
 > {
   protected subject() {
-    return `Your account deletion request`;
+    return `Your workspace deletion request`;
   }
 
   protected preview() {
-    return `Your requested account deletion code`;
+    return `Your requested workspace deletion code`;
   }
 
   protected renderAsText({ deleteConfirmationCode }: Props): string {
     return `
-You requested to permanantly delete your ${env.APP_NAME} account. Please enter the code below to confirm your account deletion.
+You requested to permanantly delete your ${env.APP_NAME} workspace. Please enter the code below to confirm the workspace deletion.
 
 Code: ${deleteConfirmationCode}
 `;
@@ -42,10 +42,10 @@ Code: ${deleteConfirmationCode}
         <Header />
 
         <Body>
-          <Heading>Your account deletion request</Heading>
+          <Heading>Your workspace deletion request</Heading>
           <p>
-            You requested to permanantly delete your {env.APP_NAME} account.
-            Please enter the code below to confirm your account deletion.
+            You requested to permanantly delete your {env.APP_NAME} workspace.
+            Please enter the code below to confirm your workspace deletion.
           </p>
           <EmptySpace height={5} />
           <p>
