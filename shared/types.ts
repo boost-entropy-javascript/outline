@@ -159,6 +159,7 @@ export type NavigationNode = {
   id: string;
   title: string;
   url: string;
+  emoji?: string;
   children: NavigationNode[];
   isDraft?: boolean;
   collectionId?: string;
@@ -216,6 +217,10 @@ export const NotificationEventDefaults = {
 export enum UnfurlType {
   Mention = "mention",
   Document = "document",
+}
+
+export enum QueryNotices {
+  UnsubscribeDocument = "unsubscribe-document",
 }
 
 export type OEmbedType = "photo" | "video" | "rich";
