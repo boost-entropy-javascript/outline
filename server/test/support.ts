@@ -17,44 +17,19 @@ export function getTestServer() {
     server.close();
   };
 
-  setupTestDatabase();
   afterAll(server.disconnect);
-
   return server;
 }
 
-export function setupTestDatabase() {
-  const flush = async () => {
-    const sql = sequelize.getQueryInterface();
-    const tables = Object.keys(sequelize.models).map((model) => {
-      const n = sequelize.models[model].getTableName();
-      return (sql.queryGenerator as any).quoteTable(
-        typeof n === "string" ? n : n.tableName
-      );
-    });
-    const flushQuery = `TRUNCATE ${tables.join(", ")} CASCADE`;
-
-    await sequelize.query(flushQuery);
-  };
-
-  const disconnect = async () => {
-    await sequelize.close();
-  };
-
-  beforeAll(flush);
-
-  afterAll(disconnect);
-}
-
 /**
- * Set the environment to be cloud hosted
+ * Set the environment to be cloud hosted.
  */
 export function setCloudHosted() {
   return (env.URL = sharedEnv.URL = "https://app.outline.dev");
 }
 
 /**
- * Set the environment to be self hosted
+ * Set the environment to be self hosted.
  */
 export async function setSelfHosted() {
   env.URL = sharedEnv.URL = "https://wiki.example.com";

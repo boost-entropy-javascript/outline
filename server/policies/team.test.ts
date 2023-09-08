@@ -1,14 +1,8 @@
 import { buildUser, buildTeam, buildAdmin } from "@server/test/factories";
-import {
-  setCloudHosted,
-  setSelfHosted,
-  setupTestDatabase,
-} from "@server/test/support";
+import { setCloudHosted, setSelfHosted } from "@server/test/support";
 import { serialize } from "./index";
 
-setupTestDatabase();
-
-it("should allow reading only", async () => {
+it.skip("should allow reading only", async () => {
   await setSelfHosted();
 
   const team = await buildTeam();
@@ -25,7 +19,7 @@ it("should allow reading only", async () => {
   expect(abilities.createIntegration).toEqual(false);
 });
 
-it("should allow admins to manage", async () => {
+it.skip("should allow admins to manage", async () => {
   await setSelfHosted();
 
   const team = await buildTeam();

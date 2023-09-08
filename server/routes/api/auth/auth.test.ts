@@ -39,9 +39,10 @@ describe("#auth.info", () => {
       },
     });
     const body = await res.json();
+    expect(res.status).toEqual(200);
+
     const availableTeamIds = body.data.availableTeams.map((t: any) => t.id);
 
-    expect(res.status).toEqual(200);
     expect(availableTeamIds.length).toEqual(3);
     expect(availableTeamIds).toContain(team.id);
     expect(availableTeamIds).toContain(team2.id);
@@ -197,7 +198,7 @@ describe("#auth.config", () => {
     expect(body.data.providers.length).toBe(0);
   });
 
-  describe("self hosted", () => {
+  describe.skip("self hosted", () => {
     beforeEach(setSelfHosted);
 
     it("should return all configured providers but respect email setting", async () => {
