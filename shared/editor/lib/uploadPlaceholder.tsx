@@ -3,6 +3,7 @@ import { Decoration, DecorationSet } from "prosemirror-view";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import FileExtension from "../components/FileExtension";
+import { recreateTransform } from "./prosemirror-recreate-transform";
 
 // based on the example at: https://prosemirror.net/examples/upload/
 const uploadPlaceholder = new Plugin({
@@ -11,8 +12,17 @@ const uploadPlaceholder = new Plugin({
       return DecorationSet.empty;
     },
     apply(tr, set: DecorationSet) {
-      // Adjust decoration positions to changes made by the transaction
-      set = set.map(tr.mapping, tr.doc);
+      const ySyncEdit = !!tr.getMeta("y-sync$");
+      if (ySyncEdit) {
+        const mapping = recreateTransform(tr.before, tr.doc, {
+          complexSteps: true,
+          wordDiffs: false,
+          simplifyDiff: true,
+        }).mapping;
+        set = set.map(mapping, tr.doc);
+      } else {
+        set = set.map(tr.mapping, tr.doc);
+      }
 
       // See if the transaction adds or removes any placeholders
       const action = tr.getMeta(this);

@@ -18,7 +18,6 @@ import {
   HasMany,
   Scopes,
   IsDate,
-  IsUrl,
   AllowNull,
   AfterUpdate,
 } from "sequelize-typescript";
@@ -52,6 +51,7 @@ import Encrypted, {
   getEncryptedColumn,
 } from "./decorators/Encrypted";
 import Fix from "./decorators/Fix";
+import IsUrlOrRelativePath from "./validators/IsUrlOrRelativePath";
 import Length from "./validators/Length";
 import NotContainsUrl from "./validators/NotContainsUrl";
 
@@ -182,7 +182,7 @@ class User extends ParanoidModel {
   language: string;
 
   @AllowNull
-  @IsUrl
+  @IsUrlOrRelativePath
   @Length({ max: 4096, msg: "avatarUrl must be less than 4096 characters" })
   @Column(DataType.STRING)
   get avatarUrl() {
@@ -525,6 +525,7 @@ class User extends ParanoidModel {
         },
       },
       limit: 1,
+      ...options,
     });
 
     if (res.count >= 1) {
@@ -563,11 +564,14 @@ class User extends ParanoidModel {
     }
   };
 
-  promote = () =>
-    this.update({
-      isAdmin: true,
-      isViewer: false,
-    });
+  promote = (options?: SaveOptions<User>) =>
+    this.update(
+      {
+        isAdmin: true,
+        isViewer: false,
+      },
+      options
+    );
 
   // hooks
 
