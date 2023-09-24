@@ -1,18 +1,20 @@
 import { Blob } from "buffer";
-import {
-  ReadStream,
-  closeSync,
-  createReadStream,
-  createWriteStream,
-  existsSync,
-  openSync,
-} from "fs";
 import { mkdir, unlink } from "fs/promises";
 import path from "path";
 import { Readable } from "stream";
+import {
+  ReadStream,
+  close,
+  pathExists,
+  createReadStream,
+  createWriteStream,
+  open,
+} from "fs-extra";
 import invariant from "invariant";
 import JWT from "jsonwebtoken";
+import safeResolvePath from "resolve-path";
 import env from "@server/env";
+import { ValidationError } from "@server/errors";
 import Logger from "@server/logging/Logger";
 import BaseStorage from "./BaseStorage";
 
@@ -52,12 +54,14 @@ export default class LocalStorage extends BaseStorage {
     key: string;
     acl?: string;
   }) => {
-    const subdir = key.split("/").slice(0, -1).join("/");
-    if (!existsSync(path.join(env.FILE_STORAGE_LOCAL_ROOT_DIR, subdir))) {
-      await mkdir(path.join(env.FILE_STORAGE_LOCAL_ROOT_DIR, subdir), {
-        recursive: true,
-      });
+    const exists = await pathExists(this.getFilePath(key));
+    if (exists) {
+      throw ValidationError(`File already exists at ${key}`);
     }
+
+    await mkdir(this.getFilePath(path.dirname(key)), {
+      recursive: true,
+    });
 
     let src: NodeJS.ReadableStream;
     if (body instanceof ReadStream) {
@@ -68,11 +72,13 @@ export default class LocalStorage extends BaseStorage {
       src = Readable.from(body);
     }
 
-    const destPath = path.join(env.FILE_STORAGE_LOCAL_ROOT_DIR, key);
-    closeSync(openSync(destPath, "w"));
+    const filePath = this.getFilePath(key);
+
+    // Create the file on disk first
+    await open(filePath, "w").then(close);
 
     return new Promise<string>((resolve, reject) => {
-      const dest = createWriteStream(destPath)
+      const dest = createWriteStream(filePath)
         .on("error", reject)
         .on("finish", () => resolve(this.getUrlForKey(key)));
 
@@ -86,7 +92,7 @@ export default class LocalStorage extends BaseStorage {
   };
 
   public async deleteFile(key: string) {
-    const filePath = path.join(env.FILE_STORAGE_LOCAL_ROOT_DIR, key);
+    const filePath = this.getFilePath(key);
     try {
       await unlink(filePath);
     } catch (err) {
@@ -112,12 +118,15 @@ export default class LocalStorage extends BaseStorage {
   };
 
   public getFileStream(key: string) {
+    return createReadStream(this.getFilePath(key));
+  }
+
+  private getFilePath(key: string) {
     invariant(
       env.FILE_STORAGE_LOCAL_ROOT_DIR,
       "FILE_STORAGE_LOCAL_ROOT_DIR is required"
     );
 
-    const filePath = path.join(env.FILE_STORAGE_LOCAL_ROOT_DIR, key);
-    return createReadStream(filePath);
+    return safeResolvePath(env.FILE_STORAGE_LOCAL_ROOT_DIR, key);
   }
 }
