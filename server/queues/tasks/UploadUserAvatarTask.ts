@@ -1,12 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import { User } from "@server/models";
+import { Buckets } from "@server/models/helpers/AttachmentHelper";
 import FileStorage from "@server/storage/files";
 import BaseTask, { TaskPriority } from "./BaseTask";
 
 type Props = {
-  /* The userId to operate on */
+  /** The userId to operate on */
   userId: string;
-  /* The original avatarUrl from the SSO provider */
+  /** The original avatarUrl from the SSO provider */
   avatarUrl: string;
 };
 
@@ -22,7 +23,7 @@ export default class UploadUserAvatarTask extends BaseTask<Props> {
 
     const res = await FileStorage.storeFromUrl(
       props.avatarUrl,
-      `avatars/${user.id}/${uuidv4()}`,
+      `${Buckets.avatars}/${user.id}/${uuidv4()}`,
       "public-read"
     );
 
