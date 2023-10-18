@@ -144,7 +144,7 @@ function Security() {
       <Text type="secondary">
         <Trans>
           Settings that impact the access, security, and content of your
-          knowledge base.
+          workspace.
         </Trans>
       </Text>
 
@@ -287,7 +287,7 @@ function Security() {
         label={t("Collection creation")}
         name="memberCollectionCreate"
         description={t(
-          "Allow members to create new collections within the knowledge base"
+          "Allow members to create new collections within the workspace"
         )}
       >
         <Switch
