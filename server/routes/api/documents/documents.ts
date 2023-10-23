@@ -400,9 +400,7 @@ router.post(
 
 router.post(
   "documents.info",
-  auth({
-    optional: true,
-  }),
+  auth({ optional: true }),
   validate(T.DocumentsInfoSchema),
   async (ctx: APIContext<T.DocumentsInfoReq>) => {
     const { id, shareId, apiVersion } = ctx.input.body;
@@ -507,9 +505,7 @@ router.post(
 router.post(
   "documents.export",
   rateLimiter(RateLimiterStrategy.FivePerMinute),
-  auth({
-    optional: true,
-  }),
+  auth({ optional: true }),
   validate(T.DocumentsExportSchema),
   async (ctx: APIContext<T.DocumentsExportReq>) => {
     const { id } = ctx.input.body;
@@ -769,9 +765,7 @@ router.post(
 
 router.post(
   "documents.search",
-  auth({
-    optional: true,
-  }),
+  auth({ optional: true }),
   pagination(),
   rateLimiter(RateLimiterStrategy.OneHundredPerMinute),
   validate(T.DocumentsSearchSchema),
@@ -955,6 +949,7 @@ router.post(
     const document = await Document.findByPk(id, {
       userId: user.id,
       includeState: true,
+      transaction,
     });
     collection = document?.collection;
     authorize(user, "update", document);
@@ -971,7 +966,7 @@ router.post(
         );
         collection = await Collection.scope({
           method: ["withMembership", user.id],
-        }).findByPk(collectionId!);
+        }).findByPk(collectionId!, { transaction });
       }
       authorize(user, "createDocument", collection);
     }
@@ -1025,13 +1020,14 @@ router.post(
 
     const document = await Document.findByPk(id, {
       userId: user.id,
+      transaction,
     });
     authorize(user, "read", document);
 
     const collection = collectionId
       ? await Collection.scope({
           method: ["withMembership", user.id],
-        }).findByPk(collectionId)
+        }).findByPk(collectionId, { transaction })
       : document?.collection;
 
     if (collection) {
@@ -1041,6 +1037,7 @@ router.post(
     if (parentDocumentId) {
       const parent = await Document.findByPk(parentDocumentId, {
         userId: user.id,
+        transaction,
       });
       authorize(user, "update", parent);
 
@@ -1083,17 +1080,19 @@ router.post(
     const { user } = ctx.state.auth;
     const document = await Document.findByPk(id, {
       userId: user.id,
+      transaction,
     });
     authorize(user, "move", document);
 
     const collection = await Collection.scope({
       method: ["withMembership", user.id],
-    }).findByPk(collectionId);
+    }).findByPk(collectionId, { transaction });
     authorize(user, "updateDocument", collection);
 
     if (parentDocumentId) {
       const parent = await Document.findByPk(parentDocumentId, {
         userId: user.id,
+        transaction,
       });
       authorize(user, "update", parent);
 
@@ -1293,6 +1292,7 @@ router.post(
         id: collectionId,
         teamId: user.teamId,
       },
+      transaction,
     });
     authorize(user, "createDocument", collection);
     let parentDocument;
@@ -1303,6 +1303,7 @@ router.post(
           id: parentDocumentId,
           collectionId: collection.id,
         },
+        transaction,
       });
       authorize(user, "read", parentDocument, {
         collection,
@@ -1335,10 +1336,10 @@ router.post(
 
     document.collection = collection;
 
-    return (ctx.body = {
+    ctx.body = {
       data: await presentDocument(document),
       policies: presentPolicies(user, [document]),
-    });
+    };
   }
 );
 
@@ -1376,6 +1377,7 @@ router.post(
           id: collectionId,
           teamId: user.teamId,
         },
+        transaction,
       });
       authorize(user, "createDocument", collection);
     }
@@ -1399,6 +1401,7 @@ router.post(
     if (templateId) {
       templateDocument = await Document.findByPk(templateId, {
         userId: user.id,
+        transaction,
       });
       authorize(user, "read", templateDocument);
     }
@@ -1422,10 +1425,10 @@ router.post(
 
     document.collection = collection;
 
-    return (ctx.body = {
+    ctx.body = {
       data: await presentDocument(document),
       policies: presentPolicies(user, [document]),
-    });
+    };
   }
 );
 
