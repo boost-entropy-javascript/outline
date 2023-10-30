@@ -50,7 +50,7 @@ export type Props = Optional<
   previewsDisabled?: boolean;
   onHeadingsChange?: (headings: Heading[]) => void;
   onSynced?: () => Promise<void>;
-  onPublish?: (event: React.MouseEvent) => any;
+  onPublish?: (event: React.MouseEvent) => void;
   editorStyle?: React.CSSProperties;
 };
 
@@ -77,10 +77,13 @@ function Editor(props: Props, ref: React.RefObject<SharedEditor> | null) {
     React.useState<HTMLAnchorElement | null>(null);
   const previousCommentIds = React.useRef<string[]>();
 
-  const handleLinkActive = React.useCallback((element: HTMLAnchorElement) => {
-    setActiveLink(element);
-    return false;
-  }, []);
+  const handleLinkActive = React.useCallback(
+    (element: HTMLAnchorElement | null) => {
+      setActiveLink(element);
+      return false;
+    },
+    []
+  );
 
   const handleLinkInactive = React.useCallback(() => {
     setActiveLink(null);
@@ -135,7 +138,7 @@ function Editor(props: Props, ref: React.RefObject<SharedEditor> | null) {
             : 1
       );
     },
-    [documents]
+    [locale, documents]
   );
 
   const handleUploadFile = React.useCallback(
@@ -351,7 +354,7 @@ function Editor(props: Props, ref: React.RefObject<SharedEditor> | null) {
             minHeight={props.editorStyle.paddingBottom}
           />
         )}
-        {activeLinkElement && !shareId && (
+        {!shareId && (
           <HoverPreview
             element={activeLinkElement}
             onClose={handleLinkInactive}

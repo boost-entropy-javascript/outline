@@ -23,6 +23,7 @@ import {
 import { Decoration, EditorView, NodeViewConstructor } from "prosemirror-view";
 import * as React from "react";
 import styled, { css, DefaultTheme, ThemeProps } from "styled-components";
+import insertFiles from "@shared/editor/commands/insertFiles";
 import Styles from "@shared/editor/components/Styles";
 import { EmbedDescriptor } from "@shared/editor/embeds";
 import Extension, { CommandFactory } from "@shared/editor/lib/Extension";
@@ -124,7 +125,7 @@ export type Props = {
     event: MouseEvent | React.MouseEvent<HTMLButtonElement>
   ) => void;
   /** Callback when user hovers on any link in the document */
-  onHoverLink?: (element: HTMLAnchorElement) => boolean;
+  onHoverLink?: (element: HTMLAnchorElement | null) => boolean;
   /** Callback when user presses any key with document focused */
   onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
   /** Collection of embed types to render in the document */
@@ -583,6 +584,25 @@ export class Editor extends React.PureComponent<
     // Have Safari remove the caret.
     window?.getSelection()?.removeAllRanges();
   };
+
+  /**
+   * Insert files at the current selection.
+   * =
+   * @param event The source event
+   * @param files The files to insert
+   * @returns True if the files were inserted
+   */
+  public insertFiles = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    files: File[]
+  ) =>
+    insertFiles(
+      this.view,
+      event,
+      this.view.state.selection.to,
+      files,
+      this.props
+    );
 
   /**
    * Returns true if the trimmed content of the editor is an empty string.
