@@ -10,6 +10,7 @@ import { Transaction } from "sequelize";
 import * as Y from "yjs";
 import textBetween from "@shared/editor/lib/textBetween";
 import { AttachmentPreset } from "@shared/types";
+import MarkdownHelper from "@shared/utils/MarkdownHelper";
 import {
   getCurrentDateAsString,
   getCurrentDateTimeAsString,
@@ -18,6 +19,7 @@ import {
 } from "@shared/utils/date";
 import attachmentCreator from "@server/commands/attachmentCreator";
 import { parser, schema } from "@server/editor";
+import { addTags } from "@server/logging/tracer";
 import { trace } from "@server/logging/tracing";
 import { Document, Revision, User } from "@server/models";
 import FileStorage from "@server/storage/files";
@@ -87,13 +89,7 @@ export default class DocumentHelper {
    * @returns The document title and content as a Markdown string
    */
   static toMarkdown(document: Document | Revision) {
-    const text = document.text.replace(/\n\\\n/g, "\n\n");
-
-    if (document.version) {
-      return `# ${document.title}\n\n${text}`;
-    }
-
-    return text;
+    return MarkdownHelper.toMarkdown(document);
   }
 
   /**
@@ -111,6 +107,11 @@ export default class DocumentHelper {
       includeStyles: options?.includeStyles,
       includeMermaid: options?.includeMermaid,
       centered: options?.centered,
+    });
+
+    addTags({
+      documentId: document.id,
+      options,
     });
 
     if (options?.signedUrls) {
@@ -157,6 +158,12 @@ export default class DocumentHelper {
     after: Revision,
     { signedUrls, ...options }: HTMLOptions = {}
   ) {
+    addTags({
+      beforeId: before?.id,
+      documentId: after.documentId,
+      options,
+    });
+
     if (!before) {
       return await DocumentHelper.toHTML(after, { ...options, signedUrls });
     }
