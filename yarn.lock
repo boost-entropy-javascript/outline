@@ -839,10 +839,10 @@
     "@babel/helper-annotate-as-pure" "^7.22.5"
     "@babel/helper-plugin-utils" "^7.22.5"
 
-"@babel/plugin-transform-regenerator@^7.18.6", "@babel/plugin-transform-regenerator@^7.22.10":
-  version "7.22.10"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-regenerator/-/plugin-transform-regenerator-7.22.10.tgz#8ceef3bd7375c4db7652878b0241b2be5d0c3cca"
-  integrity sha512-F28b1mDt8KcT5bUyJc/U9nwzw6cV+UmTeRlXYIl2TNqMMJif0Jeey9/RQ3C4NOd2zp0/TRsDns9ttj2L523rsw==
+"@babel/plugin-transform-regenerator@^7.18.6", "@babel/plugin-transform-regenerator@^7.23.3":
+  version "7.23.3"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-regenerator/-/plugin-transform-regenerator-7.23.3.tgz#141afd4a2057298602069fce7f2dc5173e6c561c"
+  integrity sha512-KP+75h0KghBMcVpuKisx3XTu9Ncut8Q8TuvGO4IhY+9D5DFEckQefOuIsB/gQ2tG71lCke4NMrtIPS8pOj18BQ==
   dependencies:
     "@babel/helper-plugin-utils" "^7.22.5"
     regenerator-transform "^0.15.2"
@@ -3395,10 +3395,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/readable-stream@^4.0.9":
-  version "4.0.9"
-  resolved "https://registry.yarnpkg.com/@types/readable-stream/-/readable-stream-4.0.9.tgz#b7f84343801107b9bcf3dca01934d30dc8df0360"
-  integrity sha512-4cwuvrmNF96M4Nrx0Eep37RwPB1Mth+nCSezsGRv5+PsFyRvDdLd0pil6gVLcWD/bh69INNdwZ98dJwfHpLohA==
+"@types/readable-stream@^4.0.10":
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/@types/readable-stream/-/readable-stream-4.0.10.tgz#009bb80d5211619cdccbe0a4c075ae18ef52eab1"
+  integrity sha512-AbUKBjcC8SHmImNi4yK2bbjogQlkFSg7shZCcicxPQapniOlajG8GCc39lvXzCWX4lLRRs7DM3VAeSlqmEVZUA==
   dependencies:
     "@types/node" "*"
     safe-buffer "~5.1.1"
@@ -7571,10 +7571,10 @@ husky@^8.0.2:
   resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.2.tgz#5816a60db02650f1f22c8b69b928fd6bcd77a236"
   integrity sha512-Tkv80jtvbnkK3mYWxPZePGFpQ/tT3HNSs/sasF9P2YfkMezDl3ON37YN6jUUI4eTg5LcyVynlb6r4eyvOmspvg==
 
-i18next-fs-backend@^2.1.5:
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-2.1.5.tgz#03347eacde6a35b599da1889a048ae63bcf0c687"
-  integrity sha512-7fgSH8nVhXSBYPHR/W3tEXXhcnwHwNiND4Dfx9knzPzdsWTUTL/TdDVV+DY0dL0asHKLbdoJaXS4LdVW6R8MVQ==
+i18next-fs-backend@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-2.3.1.tgz#0c7d2459ff4a039e2b3228131809fbc0e74ff1a8"
+  integrity sha512-tvfXskmG/9o+TJ5Fxu54sSO5OkY6d+uMn+K6JiUGLJrwxAVfer+8V3nU8jq3ts9Pe5lXJv4b1N7foIjJ8Iy2Gg==
 
 i18next-http-backend@^2.2.2:
   version "2.2.2"
@@ -11782,10 +11782,10 @@ sequelize-typescript@^2.1.6:
   dependencies:
     glob "7.2.0"
 
-sequelize@^6.33.0:
-  version "6.33.0"
-  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-6.33.0.tgz#45c70d52687f1c7eae3a0496f21f7055d99b46da"
-  integrity sha512-GkeCbqgaIcpyZ1EyXrDNIwktbfMldHAGOVXHGM4x8bxGSRAOql5htDWofPvwpfL/FoZ59CaFmfO3Mosv1lDbQw==
+sequelize@^6.35.2:
+  version "6.35.2"
+  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-6.35.2.tgz#9276d24055a9a07bd6812c89ab402659f5853e70"
+  integrity sha512-EdzLaw2kK4/aOnWQ7ed/qh3B6/g+1DvmeXr66RwbcqSm/+QRS9X0LDI5INBibsy4eNJHWIRPo3+QK0zL+IPBHg==
   dependencies:
     "@types/debug" "^4.1.8"
     "@types/validator" "^13.7.17"
