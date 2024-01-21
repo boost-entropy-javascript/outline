@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { addMinutes, subDays } from "date-fns";
 import { CollectionPermission } from "@shared/types";
 import {
@@ -1232,28 +1233,35 @@ describe("#documents.search", () => {
   });
 
   it("should return results using shareId", async () => {
+    const subdomain = faker.internet.domainWord();
+    const team = await buildTeam({ subdomain });
     const findableDocument = await buildDocument({
       title: "search term",
       text: "random text",
+      teamId: team.id,
     });
 
     await buildDocument({
       title: "search term",
       text: "should not be found",
       userId: findableDocument.createdById,
-      teamId: findableDocument.teamId,
+      teamId: team.id,
     });
 
     const share = await buildShare({
       includeChildDocuments: true,
       documentId: findableDocument.id,
-      teamId: findableDocument.teamId,
+      teamId: team.id,
+      urlId: "abc123",
     });
 
     const res = await server.post("/api/documents.search", {
       body: {
         query: "search term",
-        shareId: share.id,
+        shareId: "abc123",
+      },
+      headers: {
+        host: `${subdomain}.outline.dev`,
       },
     });
 
@@ -3593,6 +3601,30 @@ describe("#documents.unpublish", () => {
 
     const reloaded = await Document.unscoped().findByPk(document.id);
     expect(reloaded!.createdById).toEqual(user.id);
+  });
+
+  it("should unpublish a document with archived children", async () => {
+    const user = await buildUser();
+    const document = await buildDocument({
+      userId: user.id,
+      teamId: user.teamId,
+    });
+    const child = await buildDocument({
+      userId: user.id,
+      teamId: user.teamId,
+      parentDocumentId: document.id,
+    });
+    await child.archive(user.id);
+    const res = await server.post("/api/documents.unpublish", {
+      body: {
+        token: user.getJwtToken(),
+        id: document.id,
+      },
+    });
+    const body = await res.json();
+    expect(res.status).toEqual(200);
+    expect(body.data.id).toEqual(document.id);
+    expect(body.data.publishedAt).toBeNull();
   });
 
   it("should unpublish another users document", async () => {
