@@ -42,6 +42,7 @@ export type Props = {
   labelHidden?: boolean;
   icon?: React.ReactNode;
   options: Option[];
+  /** @deprecated Removing soon, do not use. */
   note?: React.ReactNode;
   onChange?: (value: string | null) => void;
 };
@@ -107,6 +108,7 @@ const InputSelect = (props: Props) => {
   );
 
   React.useEffect(() => {
+    previousValue.current = value;
     select.setSelectedValue(value);
   }, [value]);
 
@@ -205,7 +207,7 @@ const InputSelect = (props: Props) => {
         </SelectPopover>
       </Wrapper>
       {note && (
-        <Text type="secondary" size="small">
+        <Text as="p" type="secondary" size="small">
           {note}
         </Text>
       )}

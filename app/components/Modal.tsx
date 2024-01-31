@@ -89,11 +89,7 @@ const Modal: React.FC<Props> = ({
                       <ErrorBoundary component="div">{children}</ErrorBoundary>
                     </SmallContent>
                     <Header>
-                      {title && (
-                        <Text as="span" size="large">
-                          {title}
-                        </Text>
-                      )}
+                      {title && <Text size="large">{title}</Text>}
                       <NudeButton onClick={onRequestClose}>
                         <CloseIcon />
                       </NudeButton>
@@ -114,7 +110,11 @@ const Modal: React.FC<Props> = ({
                 >
                   <Content>
                     <Centered onClick={(ev) => ev.stopPropagation()} column>
-                      {title && <h1>{title}</h1>}
+                      {title && (
+                        <Text size="xlarge" weight="bold">
+                          {title}
+                        </Text>
+                      )}
                       <ErrorBoundary>{children}</ErrorBoundary>
                     </Centered>
                   </Content>
@@ -123,7 +123,7 @@ const Modal: React.FC<Props> = ({
                   </Close>
                   <Back onClick={onRequestClose}>
                     <BackIcon size={32} />
-                    <Text as="span">{t("Back")} </Text>
+                    <Text>{t("Back")} </Text>
                   </Back>
                 </Fullscreen>
               )
@@ -188,7 +188,7 @@ const Fullscreen = styled.div<FullscreenProps>`
 
 const Content = styled(Scrollable)`
   width: 100%;
-  padding: 8vh 32px;
+  padding: 8vh 12px;
 
   ${breakpoint("tablet")`
     padding: 13vh 2rem 2rem;
