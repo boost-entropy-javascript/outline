@@ -1,4 +1,5 @@
 import invariant from "invariant";
+import deburr from "lodash/deburr";
 import differenceWith from "lodash/differenceWith";
 import filter from "lodash/filter";
 import orderBy from "lodash/orderBy";
@@ -88,7 +89,11 @@ export default class UsersStore extends Store<User> {
 
   @computed
   get orderedData(): User[] {
-    return orderBy(Array.from(this.data.values()), "name", "asc");
+    return orderBy(
+      Array.from(this.data.values()),
+      (user) => user.name.toLocaleLowerCase(),
+      "asc"
+    );
   }
 
   @action
@@ -272,9 +277,6 @@ export default class UsersStore extends Store<User> {
       this.activeOrInvited,
       (user) => !userIds.includes(user.id)
     );
-    if (!query) {
-      return users;
-    }
     return queriedUsers(users, query);
   };
 
@@ -287,9 +289,6 @@ export default class UsersStore extends Store<User> {
     const users = filter(this.activeOrInvited, (user) =>
       userIds.includes(user.id)
     );
-    if (!query) {
-      return users;
-    }
     return queriedUsers(users, query);
   };
 
@@ -303,9 +302,6 @@ export default class UsersStore extends Store<User> {
       this.activeOrInvited,
       (user) => !userIds.includes(user.id)
     );
-    if (!query) {
-      return users;
-    }
     return queriedUsers(users, query);
   };
 
@@ -318,9 +314,6 @@ export default class UsersStore extends Store<User> {
     const users = filter(this.activeOrInvited, (user) =>
       userIds.includes(user.id)
     );
-    if (!query) {
-      return users;
-    }
     return queriedUsers(users, query);
   };
 
@@ -337,8 +330,12 @@ export default class UsersStore extends Store<User> {
   };
 }
 
-function queriedUsers(users: User[], query: string) {
-  return filter(users, (user) =>
-    user.name.toLowerCase().includes(query.toLowerCase())
-  );
+function queriedUsers(users: User[], query?: string) {
+  return query
+    ? filter(users, (user) =>
+        deburr(user.name.toLocaleLowerCase()).includes(
+          deburr(query.toLocaleLowerCase())
+        )
+      )
+    : users;
 }

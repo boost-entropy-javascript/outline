@@ -34,11 +34,11 @@ export const openCollection = createAction({
     return collections.map((collection) => ({
       // Note: using url which includes the slug rather than id here to bust
       // cache if the collection is renamed
-      id: collection.url,
+      id: collection.path,
       name: collection.name,
       icon: <ColorCollectionIcon collection={collection} />,
       section: CollectionSection,
-      perform: () => history.push(collection.url),
+      perform: () => history.push(collection.path),
     }));
   },
 });
@@ -161,9 +161,10 @@ export const unstarCollection = createAction({
 });
 
 export const deleteCollection = createAction({
-  name: ({ t }) => t("Delete"),
+  name: ({ t }) => `${t("Delete")}…`,
   analyticsName: "Delete collection",
   section: CollectionSection,
+  dangerous: true,
   icon: <TrashIcon />,
   visible: ({ activeCollectionId, stores }) => {
     if (!activeCollectionId) {

@@ -14,6 +14,7 @@ import Button, { Inner } from "~/components/Button";
 import Text from "~/components/Text";
 import useMenuHeight from "~/hooks/useMenuHeight";
 import useMobile from "~/hooks/useMobile";
+import useOnClickOutside from "~/hooks/useOnClickOutside";
 import { fadeAndScaleIn } from "~/styles/animations";
 import {
   Position,
@@ -76,9 +77,9 @@ const InputSelect = (props: Props) => {
     selectedValue: value,
   });
 
-  const popOver = useSelectPopover({
+  const popover = useSelectPopover({
     ...select,
-    hideOnClickOutside: true,
+    hideOnClickOutside: false,
     preventBodyScroll: true,
     disabled,
   });
@@ -105,6 +106,20 @@ const InputSelect = (props: Props) => {
   const wrappedLabel = <LabelText>{label}</LabelText>;
   const selectedValueIndex = options.findIndex(
     (option) => option.value === select.selectedValue
+  );
+
+  // Custom click outside handling rather than using `hideOnClickOutside` from reakit so that we can
+  // prevent event bubbling.
+  useOnClickOutside(
+    contentRef,
+    (event) => {
+      if (select.visible) {
+        event.stopPropagation();
+        event.preventDefault();
+        select.hide();
+      }
+    },
+    { capture: true }
   );
 
   React.useEffect(() => {
@@ -156,7 +171,7 @@ const InputSelect = (props: Props) => {
             </StyledButton>
           )}
         </Select>
-        <SelectPopover {...select} {...popOver} aria-label={ariaLabel}>
+        <SelectPopover {...select} {...popover} aria-label={ariaLabel}>
           {(props: InnerProps) => {
             const topAnchor = props.style?.top === "0";
             const rightAnchor = props.placement === "bottom-end";
