@@ -2,8 +2,10 @@ import escapeRegExp from "lodash/escapeRegExp";
 import { simpleParser } from "mailparser";
 import mammoth from "mammoth";
 import { FileImportError } from "@server/errors";
+import { trace, traceFunction } from "@server/logging/tracing";
 import turndownService from "@server/utils/turndown";
 
+@trace()
 export class DocumentConverter {
   /**
    * Convert an incoming file to markdown.
@@ -54,7 +56,9 @@ export class DocumentConverter {
 
   public static async docXToMarkdown(content: Buffer | string) {
     if (content instanceof Buffer) {
-      const { value } = await mammoth.convertToHtml({
+      const { value } = await traceFunction({ spanName: "convertToHtml" })(
+        mammoth.convertToHtml
+      )({
         buffer: content,
       });
 
