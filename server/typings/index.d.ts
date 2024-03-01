@@ -6,8 +6,6 @@ declare module "formidable/lib/file";
 
 declare module "oy-vey";
 
-declare module "dotenv";
-
 declare module "email-providers" {
   const list: string[];
   export default list;
@@ -23,8 +21,8 @@ declare module "@joplin/turndown-plugin-gfm" {
 }
 
 declare module "aws-sdk/lib/maintenance_mode_message" {
-  const maintance: {
+  const maintenance: {
     suppress: boolean;
   };
-  export default maintance;
+  export default maintenance;
 }
