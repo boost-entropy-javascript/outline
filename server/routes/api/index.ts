@@ -59,12 +59,9 @@ api.use(apiResponse());
 api.use(editor());
 
 // Register plugin API routes before others to allow for overrides
-const plugins = PluginManager.getEnabledPlugins(PluginType.API).map(
-  (plugin) => plugin.value
+PluginManager.getEnabledPlugins(PluginType.API).forEach((plugin) =>
+  router.use("/", plugin.value.routes())
 );
-for (const router of plugins) {
-  router.use("/", router.routes());
-}
 
 // routes
 router.use("/", auth.routes());
