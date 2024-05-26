@@ -954,6 +954,7 @@ router.post(
         emoji: original.emoji,
         title: original.title,
         text: original.text,
+        content: original.content,
       },
       {
         transaction,
@@ -1172,7 +1173,7 @@ router.post(
           documents.map((document) => presentDocument(ctx, document))
         ),
         collections: await Promise.all(
-          collections.map((collection) => presentCollection(collection))
+          collections.map((collection) => presentCollection(ctx, collection))
         ),
       },
       policies: collectionChanged ? presentPolicies(user, documents) : [],
