@@ -1,5 +1,7 @@
 import { Transaction, Op } from "sequelize";
 import { User, Collection, Document } from "@server/models";
+import { DocumentHelper } from "@server/models/helpers/DocumentHelper";
+import { ProsemirrorHelper } from "@server/models/helpers/ProsemirrorHelper";
 import documentCreator from "./documentCreator";
 
 type Props = {
@@ -49,7 +51,10 @@ export default async function documentDuplicator({
     color: document.color,
     template: document.template,
     title: title ?? document.title,
-    content: document.content,
+    content: ProsemirrorHelper.removeMarks(
+      DocumentHelper.toProsemirror(document),
+      ["comment"]
+    ),
     text: document.text,
     ...sharedProperties,
   });
@@ -82,6 +87,10 @@ export default async function documentDuplicator({
         icon: childDocument.icon,
         color: childDocument.color,
         title: childDocument.title,
+        content: ProsemirrorHelper.removeMarks(
+          DocumentHelper.toProsemirror(childDocument),
+          ["comment"]
+        ),
         text: childDocument.text,
         ...sharedProperties,
       });
