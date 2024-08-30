@@ -256,7 +256,7 @@ export type CollectionGroupEvent = BaseEvent<GroupMembership> & {
   name: "collections.add_group" | "collections.remove_group";
   collectionId: string;
   modelId: string;
-  data: { name: string };
+  data: { name: string; membershipId: string };
 };
 
 export type DocumentUserEvent = BaseEvent<UserMembership> & {
@@ -540,3 +540,7 @@ export type UnfurlSignature = (
 ) => Promise<Unfurl | void>;
 
 export type UninstallSignature = (integration: Integration) => Promise<void>;
+
+export type Replace<T, K extends keyof T, N extends string> = {
+  [P in keyof T as P extends K ? N : P]: T[P extends K ? K : P];
+};
