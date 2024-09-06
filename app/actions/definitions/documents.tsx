@@ -331,10 +331,14 @@ export const unsubscribeDocument = createAction({
 });
 
 export const shareDocument = createAction({
-  name: ({ t }) => t("Share"),
+  name: ({ t }) => `${t("Permissions")}…`,
   analyticsName: "Share document",
   section: DocumentSection,
   icon: <GlobeIcon />,
+  visible: ({ stores, activeDocumentId }) => {
+    const can = stores.policies.abilities(activeDocumentId!);
+    return can.manageUsers || can.share;
+  },
   perform: async ({ activeDocumentId, stores, currentUserId, t }) => {
     if (!activeDocumentId || !currentUserId) {
       return;
@@ -658,15 +662,21 @@ export const importDocument = createAction({
       const files = getEventFiles(ev);
 
       const file = files[0];
-      const document = await documents.import(
-        file,
-        activeDocumentId,
-        activeCollectionId,
-        {
-          publish: true,
-        }
-      );
-      history.push(document.url);
+
+      try {
+        const document = await documents.import(
+          file,
+          activeDocumentId,
+          activeCollectionId,
+          {
+            publish: true,
+          }
+        );
+        history.push(document.url);
+      } catch (err) {
+        toast.error(err.message);
+        throw err;
+      }
     };
 
     input.click();
