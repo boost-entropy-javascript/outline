@@ -23,7 +23,6 @@ import {
   BelongsTo,
   Column,
   Default,
-  PrimaryKey,
   Table,
   BeforeValidate,
   BeforeCreate,
@@ -39,6 +38,7 @@ import {
   IsDate,
   AllowNull,
   BelongsToMany,
+  Unique,
 } from "sequelize-typescript";
 import isUUID from "validator/lib/isUUID";
 import type {
@@ -268,7 +268,7 @@ class Document extends ParanoidModel<
     max: 10,
     msg: `urlId must be 10 characters`,
   })
-  @PrimaryKey
+  @Unique
   @Column
   urlId: string;
 
@@ -807,15 +807,14 @@ class Document extends ParanoidModel<
    * @param options FindOptions
    * @returns A promise that resolve to a list of users
    */
-  collaborators = async (options?: FindOptions<User>): Promise<User[]> => {
-    const users = await Promise.all(
-      this.collaboratorIds.map((collaboratorId) =>
-        User.findByPk(collaboratorId, options)
-      )
-    );
-
-    return compact(users);
-  };
+  collaborators = async (options?: FindOptions<User>): Promise<User[]> =>
+    await User.findAll({
+      ...options,
+      where: {
+        ...options?.where,
+        id: this.collaboratorIds,
+      },
+    });
 
   /**
    * Find all of the child documents for this document
