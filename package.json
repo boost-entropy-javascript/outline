@@ -100,7 +100,7 @@
     "class-validator": "^0.14.1",
     "command-score": "^0.1.2",
     "compressorjs": "^1.2.1",
-    "cookie": "^0.6.0",
+    "cookie": "^0.7.0",
     "copy-to-clipboard": "^3.3.3",
     "core-js": "^3.37.0",
     "crypto-js": "^4.2.0",
@@ -362,7 +362,7 @@
     "body-scroll-lock": "^4.0.0-beta.0",
     "d3": "^7.0.0",
     "debug": "4.3.4",
-    "node-fetch": "^2.6.12",
+    "node-fetch": "^2.7.0",
     "js-yaml": "^3.14.1",
     "qs": "6.9.7",
     "rollup": "^4.5.1"
