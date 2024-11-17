@@ -209,7 +209,8 @@ router.post(
   async (ctx: APIContext<T.UsersUpdateReq>) => {
     const { auth, transaction } = ctx.state;
     const actor = auth.user;
-    const { id, name, avatarUrl, language, preferences } = ctx.input.body;
+    const { id, name, avatarUrl, language, preferences, timezone } =
+      ctx.input.body;
 
     let user: User | null = actor;
     if (id) {
@@ -236,16 +237,15 @@ router.post(
         user.setPreference(key, preferences[key] as boolean);
       }
     }
+    if (timezone) {
+      user.timezone = timezone;
+    }
 
-    await Event.createFromContext(
-      ctx,
-      {
-        name: "users.update",
-        userId: user.id,
-        changes: user.changeset,
-      },
-      { transaction }
-    );
+    await Event.createFromContext(ctx, {
+      name: "users.update",
+      userId: user.id,
+      changes: user.changeset,
+    });
     await user.save({ transaction });
 
     ctx.body = {
@@ -348,20 +348,14 @@ async function updateRole(ctx: APIContext<T.UsersChangeRoleReq>) {
 
   await user.update({ role }, { transaction });
 
-  await Event.createFromContext(
-    ctx,
-    {
-      name,
-      userId,
-      data: {
-        name: user.name,
-        role,
-      },
+  await Event.createFromContext(ctx, {
+    name,
+    userId,
+    data: {
+      name: user.name,
+      role,
     },
-    {
-      transaction,
-    }
-  );
+  });
 
   const includeDetails = !!can(actor, "readDetails", user);
 
@@ -573,11 +567,8 @@ router.post(
       }
     }
 
-    await userDestroyer({
+    await userDestroyer(ctx, {
       user,
-      actor,
-      ip: ctx.request.ip,
-      transaction,
     });
 
     ctx.body = {
@@ -597,15 +588,11 @@ router.post(
     const { user } = ctx.state.auth;
     user.setNotificationEventType(eventType, true);
 
-    await Event.createFromContext(
-      ctx,
-      {
-        name: "users.update",
-        userId: user.id,
-        changes: user.changeset,
-      },
-      { transaction }
-    );
+    await Event.createFromContext(ctx, {
+      name: "users.update",
+      userId: user.id,
+      changes: user.changeset,
+    });
     await user.save({ transaction });
 
     ctx.body = {
@@ -625,15 +612,11 @@ router.post(
     const { user } = ctx.state.auth;
     user.setNotificationEventType(eventType, false);
 
-    await Event.createFromContext(
-      ctx,
-      {
-        name: "users.update",
-        userId: user.id,
-        changes: user.changeset,
-      },
-      { transaction }
-    );
+    await Event.createFromContext(ctx, {
+      name: "users.update",
+      userId: user.id,
+      changes: user.changeset,
+    });
     await user.save({ transaction });
 
     ctx.body = {

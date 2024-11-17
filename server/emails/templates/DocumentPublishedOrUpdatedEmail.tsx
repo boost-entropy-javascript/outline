@@ -1,11 +1,12 @@
 import * as React from "react";
-import { NotificationEventType } from "@shared/types";
+import { NotificationEventType, TeamPreference } from "@shared/types";
 import { Day } from "@shared/utils/time";
 import { Document, Collection, Revision } from "@server/models";
 import { DocumentHelper } from "@server/models/helpers/DocumentHelper";
 import HTMLHelper from "@server/models/helpers/HTMLHelper";
 import NotificationSettingsHelper from "@server/models/helpers/NotificationSettingsHelper";
 import SubscriptionHelper from "@server/models/helpers/SubscriptionHelper";
+import { can } from "@server/policies";
 import BaseEmail, { EmailMessageCategory, EmailProps } from "./BaseEmail";
 import Body from "./components/Body";
 import Button from "./components/Button";
@@ -57,13 +58,16 @@ export default class DocumentPublishedOrUpdatedEmail extends BaseEmail<
       return false;
     }
 
-    const collection = await document.$get("collection");
+    const [collection, team] = await Promise.all([
+      document.$get("collection"),
+      document.$get("team"),
+    ]);
     if (!collection) {
       return false;
     }
 
     let body;
-    if (revisionId) {
+    if (revisionId && team?.getPreference(TeamPreference.PreviewsInEmails)) {
       // generate the diff html for the email
       const revision = await Revision.findByPk(revisionId);
 
@@ -114,6 +118,15 @@ export default class DocumentPublishedOrUpdatedEmail extends BaseEmail<
 
   protected fromName({ actorName }: Props) {
     return actorName;
+  }
+
+  protected replyTo({ notification }: Props) {
+    if (notification?.user && notification.actor?.email) {
+      if (can(notification.user, "readEmail", notification.actor)) {
+        return notification.actor.email;
+      }
+    }
+    return;
   }
 
   protected renderAsText({

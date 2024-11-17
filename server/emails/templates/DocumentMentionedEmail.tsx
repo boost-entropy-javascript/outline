@@ -1,11 +1,9 @@
 import differenceBy from "lodash/differenceBy";
 import * as React from "react";
-import { Day } from "@shared/utils/time";
 import { Document, Revision } from "@server/models";
 import { DocumentHelper } from "@server/models/helpers/DocumentHelper";
-import HTMLHelper from "@server/models/helpers/HTMLHelper";
 import { ProsemirrorHelper } from "@server/models/helpers/ProsemirrorHelper";
-import { TextHelper } from "@server/models/helpers/TextHelper";
+import { can } from "@server/policies";
 import BaseEmail, { EmailMessageCategory, EmailProps } from "./BaseEmail";
 import Body from "./components/Body";
 import Button from "./components/Button";
@@ -47,6 +45,11 @@ export default class DocumentMentionedEmail extends BaseEmail<
       return false;
     }
 
+    const team = await document.$get("team");
+    if (!team) {
+      return false;
+    }
+
     let currDoc: Document | Revision = document;
     let prevDoc: Revision | undefined;
 
@@ -79,18 +82,8 @@ export default class DocumentMentionedEmail extends BaseEmail<
         DocumentHelper.toProsemirror(currDoc),
         firstNewMention
       );
-
       if (node) {
-        const content = await TextHelper.attachmentsToSignedUrls(
-          ProsemirrorHelper.toHTML(node, { centered: false }),
-          document.teamId,
-          4 * Day.seconds
-        );
-
-        if (content) {
-          // inline all css so that it works in as many email providers as possible.
-          body = await HTMLHelper.inlineCSS(content);
-        }
+        body = await this.htmlForData(team, node);
       }
     }
 
@@ -107,6 +100,15 @@ export default class DocumentMentionedEmail extends BaseEmail<
 
   protected fromName({ actorName }: Props) {
     return actorName;
+  }
+
+  protected replyTo({ notification }: Props) {
+    if (notification?.user && notification.actor?.email) {
+      if (can(notification.user, "readEmail", notification.actor)) {
+        return notification.actor.email;
+      }
+    }
+    return;
   }
 
   protected renderAsText({ actorName, teamUrl, document }: Props): string {
