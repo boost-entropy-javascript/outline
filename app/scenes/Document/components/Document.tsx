@@ -29,6 +29,7 @@ import { ProsemirrorHelper } from "@shared/utils/ProsemirrorHelper";
 import { TextHelper } from "@shared/utils/TextHelper";
 import { parseDomain } from "@shared/utils/domains";
 import { determineIconType } from "@shared/utils/icon";
+import { isModKey } from "@shared/utils/keyboard";
 import RootStore from "~/stores/RootStore";
 import Document from "~/models/Document";
 import Revision from "~/models/Revision";
@@ -47,7 +48,6 @@ import type { Editor as TEditor } from "~/editor";
 import { SearchResult } from "~/editor/components/LinkEditor";
 import { client } from "~/utils/ApiClient";
 import { emojiToUrl } from "~/utils/emoji";
-import { isModKey } from "~/utils/keyboard";
 
 import {
   documentHistoryPath,
@@ -59,7 +59,6 @@ import Contents from "./Contents";
 import Editor from "./Editor";
 import Header from "./Header";
 import KeyboardShortcutsButton from "./KeyboardShortcutsButton";
-import MarkAsViewed from "./MarkAsViewed";
 import { MeasuredContainer } from "./MeasuredContainer";
 import Notices from "./Notices";
 import PublicReferences from "./PublicReferences";
@@ -583,7 +582,7 @@ class DocumentScene extends React.Component<Props> {
                         canUpdate={abilities.update}
                         canComment={abilities.comment}
                       >
-                        {shareId && (
+                        {shareId ? (
                           <ReferencesWrapper>
                             <PublicReferences
                               shareId={shareId}
@@ -591,15 +590,11 @@ class DocumentScene extends React.Component<Props> {
                               sharedTree={this.props.sharedTree}
                             />
                           </ReferencesWrapper>
-                        )}
-                        {!isShare && !revision && (
-                          <>
-                            <MarkAsViewed document={document} />
-                            <ReferencesWrapper>
-                              <References document={document} />
-                            </ReferencesWrapper>
-                          </>
-                        )}
+                        ) : !revision ? (
+                          <ReferencesWrapper>
+                            <References document={document} />
+                          </ReferencesWrapper>
+                        ) : null}
                       </Editor>
                     </MeasuredContainer>
                   </>
