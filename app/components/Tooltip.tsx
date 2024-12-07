@@ -2,6 +2,7 @@ import Tippy, { TippyProps } from "@tippyjs/react";
 import { transparentize } from "polished";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
+import { roundArrow } from "tippy.js";
 import { s } from "@shared/styles";
 import useMobile from "~/hooks/useMobile";
 import { useTooltipContext } from "./TooltipContext";
@@ -11,9 +12,24 @@ export type Props = Omit<TippyProps, "content" | "theme"> & {
   content?: React.ReactChild | React.ReactChild[];
   /** A keyboard shortcut to display next to the content */
   shortcut?: React.ReactNode;
+  /** Whether to show the shortcut on a new line */
+  shortcutOnNewline?: boolean;
 };
 
-function Tooltip({ shortcut, content: tooltip, delay = 500, ...rest }: Props) {
+/**
+ * A tooltip component that wraps Tippy and provides a consistent look and feel. Optionally
+ * displays a keyboard shortcut next to the content.
+ *
+ * Wrap this component in a TooltipProvider to allow multiple tooltips to share the same
+ * singleton instance (delay, animation, etc).
+ */
+function Tooltip({
+  shortcut,
+  shortcutOnNewline,
+  content: tooltip,
+  delay = 500,
+  ...rest
+}: Props) {
   const isMobile = useMobile();
   const singleton = useTooltipContext();
 
@@ -26,7 +42,8 @@ function Tooltip({ shortcut, content: tooltip, delay = 500, ...rest }: Props) {
   if (shortcut) {
     content = (
       <>
-        {tooltip}{" "}
+        {tooltip}
+        {shortcutOnNewline ? <br /> : " "}
         {typeof shortcut === "string" ? (
           shortcut
             .split("+")
@@ -43,7 +60,16 @@ function Tooltip({ shortcut, content: tooltip, delay = 500, ...rest }: Props) {
   }
 
   return (
-    <Tippy content={content} delay={delay} singleton={singleton} {...rest} />
+    <Tippy
+      arrow={roundArrow}
+      content={content}
+      delay={delay}
+      animation="shift-away"
+      singleton={singleton}
+      duration={[200, 150]}
+      inertia
+      {...rest}
+    />
   );
 }
 
