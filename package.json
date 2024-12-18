@@ -335,7 +335,7 @@
     "eslint-config-prettier": "^8.10.0",
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-es": "^4.1.0",
-    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-lodash": "^7.4.0",
     "eslint-plugin-node": "^11.1.0",
@@ -355,7 +355,7 @@
     "rimraf": "^2.5.4",
     "rollup-plugin-webpack-stats": "^0.4.1",
     "terser": "^5.36.0",
-    "typescript": "^5.6.3",
+    "typescript": "^5.7.2",
     "vite-plugin-static-copy": "^0.17.0",
     "yarn-deduplicate": "^6.0.2"
   },
